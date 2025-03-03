@@ -9,15 +9,15 @@ import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
-      <Router>
+    <Router>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="jobs" element={<HomePage />} />
-        <Route path="jobs/:id" element={<JobDetailsPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="signup" element={<SignUpPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="jobs" element={<HomePage />} />
+          <Route path="jobs/:id" element={<JobDetailsPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignUpPage />} />
         </Route>
       </Routes>
     </Router>
