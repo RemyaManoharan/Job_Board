@@ -1,12 +1,13 @@
-import React from 'react';
-
+import React from "react";
+import JobList from "../components/Jobs/JobList";
 
 const HomePage = () => {
   return (
     <div className="flex flex-col md:flex-row gap-4">
       {/* Left sidebar - Filter section */}
+
       <div className="w-full md:w-1/4 bg-blue-200 p-4 rounded">
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <input 
             type="text" 
             placeholder="Filter by title" 
@@ -47,37 +48,18 @@ const HomePage = () => {
         
         <div className="mb-4">
           <h3 className="font-medium mb-2">Salary Range</h3>
-          {/* Placeholder for salary range slider */}
+        
           <div className="h-6 bg-gray-300 rounded"></div>
-        </div>
+        </div> */}
       </div>
-      
+
       {/* Right content - Job listings */}
-      <div className="w-full md:w-3/4 bg-red-200 p-4 rounded">
+      <div className="w-full md:w-3/4p-4 rounded">
         {/* Job cards */}
-        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
-          <h2 className="text-xl font-bold">Job Title</h2>
-          <div className="text-sm text-gray-600">
-            Company • Location • Type
-          </div>
-        </div>
-        
-        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
-          <h2 className="text-xl font-bold">Job Title</h2>
-          <div className="text-sm text-gray-600">
-            Company • Location • Type
-          </div>
-        </div>
-        
-        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
-          <h2 className="text-xl font-bold">Job Title</h2>
-          <div className="text-sm text-gray-600">
-            Company • Location • Type
-          </div>
-        </div>
+        <JobList />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
