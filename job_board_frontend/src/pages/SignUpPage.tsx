@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SignUpFormValues } from "../models/User";
+import { Link } from "react-router-dom";
 
 const SignUpSchema = Yup.object().shape({
   f_name: Yup.string().required("First name is required"),
@@ -112,12 +113,12 @@ const SignUpPage: React.FC = () => {
               {/* Login link */}
               <div className="mt-4 text-center text-sm">
                 Already have an account?
-                <a
-                  href="/login"
-                  className="text-blue-500 hover:text-blue-700 ml-1"
+                <Link
+                  to="/signup"
+                  className="text-blue-600 hover:text-blue-500 font-medium"
                 >
-                  Login
-                </a>
+                  Log in
+                </Link>
               </div>
             </Form>
           )}
