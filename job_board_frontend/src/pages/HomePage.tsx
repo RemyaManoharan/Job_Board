@@ -1,9 +1,81 @@
-import React from 'react'
+import React from 'react';
+
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="flex flex-col md:flex-row gap-4">
+      {/* Left sidebar - Filter section */}
+      <div className="w-full md:w-1/4 bg-blue-200 p-4 rounded">
+        <div className="mb-4">
+          <input 
+            type="text" 
+            placeholder="Filter by title" 
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        
+        <div className="mb-4">
+          <input 
+            type="text" 
+            placeholder="Filter by location" 
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        
+        <div className="mb-4 flex items-center">
+          <input type="checkbox" id="remote" className="mr-2" />
+          <label htmlFor="remote">Remote Work</label>
+        </div>
+        
+        <div className="mb-4">
+          <h3 className="font-medium mb-2">Types of Job</h3>
+          <div className="pl-2">
+            <div className="mb-1 flex items-center">
+              <input type="checkbox" id="internship" className="mr-2" />
+              <label htmlFor="internship">Internship</label>
+            </div>
+            <div className="mb-1 flex items-center">
+              <input type="checkbox" id="part-time" className="mr-2" />
+              <label htmlFor="part-time">Part-time</label>
+            </div>
+            <div className="mb-1 flex items-center">
+              <input type="checkbox" id="full-time" className="mr-2" />
+              <label htmlFor="full-time">Full time</label>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mb-4">
+          <h3 className="font-medium mb-2">Salary Range</h3>
+          {/* Placeholder for salary range slider */}
+          <div className="h-6 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+      
+      {/* Right content - Job listings */}
+      <div className="w-full md:w-3/4 bg-red-200 p-4 rounded">
+        {/* Job cards */}
+        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
+          <h2 className="text-xl font-bold">Job Title</h2>
+          <div className="text-sm text-gray-600">
+            Company • Location • Type
+          </div>
+        </div>
+        
+        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
+          <h2 className="text-xl font-bold">Job Title</h2>
+          <div className="text-sm text-gray-600">
+            Company • Location • Type
+          </div>
+        </div>
+        
+        <div className="mb-4 p-4 border border-gray-300 bg-white rounded">
+          <h2 className="text-xl font-bold">Job Title</h2>
+          <div className="text-sm text-gray-600">
+            Company • Location • Type
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
