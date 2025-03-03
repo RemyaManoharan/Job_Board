@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { SignUpFormValues } from "../models/User";
+import { SignUpFormValues } from "../type/User";
 import { Link } from "react-router-dom";
 
 const SignUpSchema = Yup.object().shape({

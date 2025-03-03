@@ -1,6 +1,6 @@
 import React from "react";
 import JobCard from "./JobCard";
-import { Job } from "../../models/jobs";
+import { Job } from "../../type/jobs";
 
 const JobList = () => {
   const jobs: Job[] = [

@@ -1,5 +1,5 @@
 import React from "react";
-import { Job } from "../../models/jobs";
+import { Job } from "../../type/jobs";
 import { useNavigate } from "react-router-dom";
 
 interface JobCardProps {
