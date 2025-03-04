@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
+const routes = require("./src/routes");
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+app.use("/api", routes);
 // Basic route to test server
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Job Board API" });
