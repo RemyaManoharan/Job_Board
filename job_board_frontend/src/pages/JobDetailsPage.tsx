@@ -1,9 +1,11 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import JobApplicationModal from "../components/Jobs/JobApplicationModal";
 
 const JobDetailsPage = () => {
   const { jobId } = useParams();
-  const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const job = {
     job_id: "1",
@@ -25,7 +27,9 @@ const JobDetailsPage = () => {
     ],
     posted_date: "2025-02-15",
   };
-
+  const handleApplyClick = () => {
+    setIsModalOpen(true);
+  };
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white shadow-md rounded-lg">
       <div className="border-b pb-4 mb-4">
@@ -82,12 +86,15 @@ const JobDetailsPage = () => {
 
       <div className="mt-8 flex justify-end">
         <button
-          onClick={() => navigate(`/jobs/${jobId}/apply`)}
+          onClick={handleApplyClick}
           className="w-full md:w-auto px-6 py-3 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors"
         >
           Apply
         </button>
       </div>
+      {isModalOpen && (
+        <JobApplicationModal onClose={() => setIsModalOpen(false)} job={job} />
+      )}
     </div>
   );
 };
