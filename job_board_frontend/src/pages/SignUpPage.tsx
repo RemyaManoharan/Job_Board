@@ -2,7 +2,10 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SignUpFormValues } from "../type/User";
-import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { signUpUser } from "../api/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpSchema = Yup.object().shape({
   f_name: Yup.string().required("First name is required"),
@@ -14,16 +17,40 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
+  const signIn = useSignIn();
   const initialValues: SignUpFormValues = {
     f_name: "",
     l_name: "",
     email: "",
     password: "",
   };
-  const handleSubmit = (values: SignUpFormValues) => {
-    // Just log the values for now
-    console.log("Form values:", values);
-    // API integration will be implemented later
+  const mutation = useMutation({
+    mutationFn: signUpUser,
+    onSuccess: (data) => {
+      // Store user token using React Auth Kit
+      signIn({
+        auth: {
+          token: data.token,
+          type: "Bearer",
+        },
+        userState: { id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, // Save user details
+      });
+console.log("User registered",data)
+      // Redirect to home or dashboard
+      navigate("/");
+    },
+    onError: (error: any) => {
+      console.error(
+        "Sign-up error:",
+        error.response?.data?.message || error.message
+      );
+      alert("Sign-up failed. Please try again.");
+    },
+  });
+  const handleSubmit = (values: SignUpFormValues, { setSubmitting }: any) => {
+    mutation.mutate(values);
+    setSubmitting(false);
   };
   return (
     <div className="flex h-full justify-center items-start  min-h-screen bg-gray-50 py-12">

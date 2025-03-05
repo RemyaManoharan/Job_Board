@@ -6,9 +6,12 @@ import JobDetailsPage from "./pages/JobDetailsPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import Layout from "./components/Layout/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <Router>
       <Routes>
         {/* Public Routes */}
@@ -21,6 +24,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    </QueryClientProvider>
   );
 }
 
