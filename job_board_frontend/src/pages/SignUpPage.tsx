@@ -37,8 +37,9 @@ const SignUpPage: React.FC = () => {
       //   userState: { id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, // Save user details
       // });
       console.log("User registered", data);
-      // Redirect to home or dashboard
+      navigate("/");
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error(
         "Sign-up error:",
@@ -47,6 +48,7 @@ const SignUpPage: React.FC = () => {
       alert("Sign-up failed. Please try again.");
     },
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: SignUpFormValues, { setSubmitting }: any) => {
     mutation.mutate(values);
     setSubmitting(false);

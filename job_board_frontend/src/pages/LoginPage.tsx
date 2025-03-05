@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
+import { useMutation } from "react-query";
+import { loginUser } from "../api/auth";
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+ 
 
-  interface LoginFormValues {
-    email: string;
-    password: string;
-  }
+  const { mutate, isLoading } = useMutation(loginUser, {
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/"); // Redirect to home page or dashboard
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      setLoginError(error.response?.data?.message || "Login failed. Try again.");
+    },
+  });
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -20,35 +30,7 @@ const LoginPage: React.FC = () => {
       .required("Password is required")
       .min(6, "Password must be at least 6 characters"),
   });
-  // const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-  //   setIsLoading(true);
-  //   setLoginError('');
-
-  //   try {
-  //     const response = await authService.login(values.email, values.password);
-
-  //     // Store the token in localStorage
-  //     localStorage.setItem('token', response.token);
-  //     localStorage.setItem('user', JSON.stringify(response.user));
-
-  //     // Reset form and navigate to dashboard or job list
-  //     resetForm();
-  //     navigate('/dashboard');
-  //   } catch (error) {
-  //     console.error('Login error:', error);
-  //     setLoginError(
-  //       error.response?.data?.message || 'Login failed. Please try again.'
-  //     );
-  //   } finally {
-  //     setIsLoading(false);
-  //     setSubmitting(false);
-  //   }
-  // };
-  const handleSubmit = (values: LoginFormValues) => {
-    // Just log the values for now
-    console.log("Form values:", values);
-    // API integration will be implemented later
-  };
+  
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">
@@ -64,7 +46,7 @@ const LoginPage: React.FC = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => mutate(values)}
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>

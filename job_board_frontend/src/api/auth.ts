@@ -1,11 +1,15 @@
 import axios from "axios";
-import { SignUpFormValues } from "../type/User";
+import { SignUpFormValues, LoginFormValues } from "../type/User";
 
-
-// console.log("API URL:", process.env.REACT_APP_API_URL);
 export const signUpUser = async (userData: SignUpFormValues) => {
-// const apiUrl = `${process.env.REACT_APP_API_URL}/users/register`;
-//  const response = await axios.post(apiUrl, userData);
 const response = await axios.post('http://localhost:8000/api/users/register', userData);
-return response.data; // This includes the user object and the token
+return response.data;
 };
+
+export const loginUser = async (userData: LoginFormValues) => {
+    const response = await axios.post(
+      "http://localhost:8000/api/users/login",
+      userData
+    );
+    return response.data;
+  };
