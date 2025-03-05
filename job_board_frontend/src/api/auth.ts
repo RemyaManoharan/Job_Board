@@ -2,7 +2,7 @@ import axios from "axios";
 import { SignUpFormValues } from "../type/User";
 
 
-console.log("API URL:", process.env.REACT_APP_API_URL);
+// console.log("API URL:", process.env.REACT_APP_API_URL);
 export const signUpUser = async (userData: SignUpFormValues) => {
 // const apiUrl = `${process.env.REACT_APP_API_URL}/users/register`;
 //  const response = await axios.post(apiUrl, userData);

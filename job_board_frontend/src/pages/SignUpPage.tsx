@@ -2,10 +2,10 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SignUpFormValues } from "../type/User";
-import { useMutation } from "@tanstack/react-query";
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
+// import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { signUpUser } from "../api/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 const SignUpSchema = Yup.object().shape({
   f_name: Yup.string().required("First name is required"),
@@ -18,7 +18,7 @@ const SignUpSchema = Yup.object().shape({
 
 const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
-  const signIn = useSignIn();
+  // const signIn = useSignIn();
   const initialValues: SignUpFormValues = {
     f_name: "",
     l_name: "",
@@ -29,16 +29,15 @@ const SignUpPage: React.FC = () => {
     mutationFn: signUpUser,
     onSuccess: (data) => {
       // Store user token using React Auth Kit
-      signIn({
-        auth: {
-          token: data.token,
-          type: "Bearer",
-        },
-        userState: { id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, // Save user details
-      });
-console.log("User registered",data)
+      // signIn({
+      //   auth: {
+      //     token: data.token,
+      //     type: "Bearer",
+      //   },
+      //   userState: { id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, // Save user details
+      // });
+      console.log("User registered", data);
       // Redirect to home or dashboard
-      navigate("/");
     },
     onError: (error: any) => {
       console.error(
@@ -66,7 +65,6 @@ console.log("User registered",data)
         >
           {({ isSubmitting }) => (
             <Form className="space-y-6">
-              {/* Name row with two columns */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <Field
@@ -96,7 +94,6 @@ console.log("User registered",data)
                 </div>
               </div>
 
-              {/* Email field */}
               <div className="mb-4">
                 <Field
                   name="email"
@@ -111,7 +108,6 @@ console.log("User registered",data)
                 />
               </div>
 
-              {/* Password field */}
               <div className="mb-6">
                 <Field
                   name="password"
@@ -126,7 +122,6 @@ console.log("User registered",data)
                 />
               </div>
 
-              {/* Submit button */}
               <div className="mt-8 flex justify-center">
                 <button
                   type="submit"
@@ -137,7 +132,6 @@ console.log("User registered",data)
                 </button>
               </div>
 
-              {/* Login link */}
               <div className="mt-4 text-center text-sm">
                 Already have an account?
                 <Link
