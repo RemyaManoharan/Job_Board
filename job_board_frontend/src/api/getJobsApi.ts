@@ -2,7 +2,16 @@ import axios from "axios";
 import { JobDetail, Job } from "../type/jobs";
 import { useJobStore } from "../store/jobStore";
 
-export const fetchJobs = async (): Promise<Job[]> => {
+export interface ApiResponse {
+  jobs: Job[];
+  pagination: {
+    total: number;
+    pages: number;
+    currentPage: number;
+    limit: number;
+  };
+}
+export const fetchJobs = async (): Promise<ApiResponse> => {
   const filters = useJobStore.getState().filters;
   const params = new URLSearchParams();
 
@@ -31,13 +40,13 @@ export const fetchJobs = async (): Promise<Job[]> => {
   }
 
   // Default pagination values
-  params.append("page", "1");
-  params.append("limit", "10");
+  params.append("page", String(filters.page));
+  params.append("limit", String(filters.limit));
 
   const response = await axios.get(
     `http://localhost:8000/api/jobs?${params.toString()}`
   );
-  return response.data.jobs;
+  return response.data;
 };
 
 export const fetchJobDetail = async (jobId: number): Promise<JobDetail> => {

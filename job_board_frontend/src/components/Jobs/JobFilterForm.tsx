@@ -6,6 +6,7 @@ const JobFilters: React.FC = () => {
   const filters = useJobStore((state) => state.filters);
   const setFilters = useJobStore((state) => state.setFilters);
   const resetFilters = useJobStore((state) => state.resetFilters);
+  const setPage = useJobStore((state) => state.setPage);
   const queryClient = useQueryClient();
 
   // Local state for salary range slider
@@ -18,16 +19,19 @@ const JobFilters: React.FC = () => {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilters = { ...filters, title: event.target.value };
     setFilters(newFilters);
+    setPage(1);
   };
 
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilters = { ...filters, location: event.target.value };
     setFilters(newFilters);
+    setPage(1);
   };
 
   const handleRemoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilters = { ...filters, isRemote: event.target.checked };
     setFilters(newFilters);
+    setPage(1);
   };
 
   // Handle category changes
@@ -47,35 +51,38 @@ const JobFilters: React.FC = () => {
     }
     const newFilters = { ...filters, category: newCategories };
     setFilters(newFilters);
+    setPage(1);
   };
 
   // Handle salary range changes
   const handleMinSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10) || 0;
-    
-    setSalaryRange(prev => ({
+
+    setSalaryRange((prev) => ({
       ...prev,
-      min: newValue
+      min: newValue,
     }));
-    
+
     const newFilters = { ...filters, minSalary: newValue };
     setFilters(newFilters);
-  };
-  
-  const handleMaxSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value, 10) || 0;
-    
-    setSalaryRange(prev => ({
-      ...prev,
-      max: newValue
-    }));
-    
-    const newFilters = { ...filters, maxSalary: newValue };
-    setFilters(newFilters);
+    setPage(1);
   };
 
-  // Apply filters (force a refetch)
+  const handleMaxSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(e.target.value, 10) || 0;
+
+    setSalaryRange((prev) => ({
+      ...prev,
+      max: newValue,
+    }));
+
+    const newFilters = { ...filters, maxSalary: newValue };
+    setFilters(newFilters);
+    setPage(1);
+  };
+
   const handleApplyFilters = () => {
+    setPage(1);
     queryClient.invalidateQueries("jobs");
   };
 
@@ -83,6 +90,7 @@ const JobFilters: React.FC = () => {
   const handleResetFilters = () => {
     resetFilters();
     setSalaryRange({ min: 0, max: 200000 });
+    setPage(1);
     queryClient.invalidateQueries("jobs");
   };
 
@@ -211,7 +219,7 @@ const JobFilters: React.FC = () => {
           onClick={handleApplyFilters}
           className="flex-1 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
         >
-          Apply 
+          Apply
         </button>
         <button
           onClick={handleResetFilters}
