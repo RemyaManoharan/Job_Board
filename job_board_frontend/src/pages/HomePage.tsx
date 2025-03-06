@@ -1,7 +1,17 @@
 import React from "react";
 import JobList from "../components/Jobs/JobList";
-
+import { fetchJobs } from "../api/getJobsApi";
+import { useJobStore } from "../store/jobStore";
+import { useQuery } from "react-query";
 const HomePage = () => {
+  const setJobs = useJobStore((state) => state.setJobs);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: jobs, isLoading } = useQuery("jobs", fetchJobs, {
+    onSuccess: (data) => {
+      setJobs(data);
+    },
+  });
+
   return (
     <div className="flex flex-col md:flex-row gap-4">
       {/* Left sidebar - Filter section */}
@@ -55,7 +65,7 @@ const HomePage = () => {
 
       {/* Right content - Job listings */}
       <div className="w-full md:w-3/4p-4 rounded">
-        {/* Job cards */}
+        {isLoading && <p>Loading jobs...</p>}
         <JobList />
       </div>
     </div>
