@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
-    <div className="w-full bg-blue-200 p-4 flex justify-between items-center">
+    <div className="w-full bg-white p-4 flex justify-between items-center">
       <div className="text-xl font-bold">
         <Link to="/">Job Sphere</Link>
       </div>

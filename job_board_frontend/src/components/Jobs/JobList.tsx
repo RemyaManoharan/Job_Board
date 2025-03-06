@@ -5,7 +5,7 @@ import { useJobStore } from "../../store/jobStore";
 const JobList = () => {
  const jobs = useJobStore((state) => state.jobs);
   return (
-    <div className="w-full md:w-3/4  p-4 rounded">
+    <div className="w-full md:w-3/4 rounded">
       {jobs.length === 0 ? (
         <p>No jobs available</p>
       ) : (
