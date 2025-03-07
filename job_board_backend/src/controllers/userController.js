@@ -26,8 +26,6 @@ exports.registerUser = async (req, res) => {
     );
 
     const user = newUser.rows[0];
-
-    // Create JWT token
     // Create JWT token
     const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
@@ -57,7 +55,6 @@ exports.loginUser = async (req, res) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
-
     // Find user
     const result = await query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -66,19 +63,15 @@ exports.loginUser = async (req, res) => {
     }
 
     const user = result.rows[0];
-
-    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
     // Create JWT token
     const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-
     // Return user info and token
     res.json({
       user: {
@@ -97,22 +90,12 @@ exports.loginUser = async (req, res) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     // User is already available from auth middleware
-    const result = await query(
-      "SELECT user_id, f_name, l_name, email, role FROM users WHERE user_id = $1",
-      [req.user.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const user = result.rows[0];
-
+    console.log("User from middleware:", req.user);
     res.json({
-      id: user.user_id,
-      name: `${user.f_name} ${user.l_name}`,
-      email: user.email,
-      role: user.role,
+      id: req.user.user_id,
+      name: `${req.user.f_name} ${req.user.l_name}`,
+      email: req.user.email,
+      role: req.user.role,
     });
   } catch (error) {
     console.error("Get current user error:", error);

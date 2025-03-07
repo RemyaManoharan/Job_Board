@@ -1,13 +1,31 @@
 export interface Job {
-  job_id: string;
-  job_title: string;
-  company: string;
+  id: number;
+  title: string;
   location: string;
-  job_category: string;
+  company: string;
+  category: string;
   isRemote: boolean;
   salary: string;
-  job_description: string;
+  createdAt: string;
+}
+export interface Company {
+  id: number;
+  name: string;
+  description: string;
+  websiteUrl: string;
+  location: string;
+}
+export interface JobDetail {
+  id: number;
+  title: string;
+  description: string;
   skills: string[];
-  responsibilities: string[];
-  posted_date: string;
+  responsibilities: string;
+  location: string;
+  salary: string;
+  category: string;
+  isRemote: boolean;
+  status: string;
+  createdAt: string;
+  company: Company;
 }

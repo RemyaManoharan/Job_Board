@@ -1,62 +1,48 @@
 import React from "react";
 import JobList from "../components/Jobs/JobList";
-
+import { fetchJobs } from "../api/getJobsApi";
+import { useJobStore } from "../store/jobStore";
+import { useQuery } from "react-query";
+import FilterForm from "../components/Jobs/JobFilterForm";
+import Pagination from "../components/Jobs/Pagination";
 const HomePage = () => {
+  const setJobs = useJobStore((state) => state.setJobs);
+  const filters = useJobStore((state) => state.filters);
+  const { isLoading } = useQuery(
+    ["jobs", filters],
+    async () => {
+      const response = await fetchJobs();
+      return response;
+    },
+    {
+      onSuccess: (data) => {
+        setJobs(data.jobs, data.pagination);
+      },
+      // Delay refetching to avoid too many API calls while typing
+      staleTime: 500,
+    }
+  );
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      {/* Left sidebar - Filter section */}
-
-      <div className="w-full md:w-1/4 bg-blue-200 p-4 rounded">
-        {/* <div className="mb-4">
-          <input 
-            type="text" 
-            placeholder="Filter by title" 
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        
-        <div className="mb-4">
-          <input 
-            type="text" 
-            placeholder="Filter by location" 
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        
-        <div className="mb-4 flex items-center">
-          <input type="checkbox" id="remote" className="mr-2" />
-          <label htmlFor="remote">Remote Work</label>
-        </div>
-        
-        <div className="mb-4">
-          <h3 className="font-medium mb-2">Types of Job</h3>
-          <div className="pl-2">
-            <div className="mb-1 flex items-center">
-              <input type="checkbox" id="internship" className="mr-2" />
-              <label htmlFor="internship">Internship</label>
-            </div>
-            <div className="mb-1 flex items-center">
-              <input type="checkbox" id="part-time" className="mr-2" />
-              <label htmlFor="part-time">Part-time</label>
-            </div>
-            <div className="mb-1 flex items-center">
-              <input type="checkbox" id="full-time" className="mr-2" />
-              <label htmlFor="full-time">Full time</label>
-            </div>
-          </div>
-        </div>
-        
-        <div className="mb-4">
-          <h3 className="font-medium mb-2">Salary Range</h3>
-        
-          <div className="h-6 bg-gray-300 rounded"></div>
-        </div> */}
+    <div className="flex flex-col h-screen">
+      {/* Header row that spans the full width */}
+      <div className="w-full bg-white-50 p-6 mb-4">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Find Your Next Opportunities
+        </h1>
       </div>
 
-      {/* Right content - Job listings */}
-      <div className="w-full md:w-3/4p-4 rounded">
-        {/* Job cards */}
-        <JobList />
+      <div className="flex flex-col md:flex-row gap-4 h-screen">
+        {/* Left sidebar - Filter section */}
+        <div className="w-full h-[90vh] md:w-1/4">
+          <FilterForm />
+        </div>
+
+        {/* Right content - Job listings */}
+        <div className="w-full md:w-3/4p-4 h-[90vh] rounded">
+          {isLoading && <p>Loading jobs...</p>}
+          <JobList />
+          <Pagination />
+        </div>
       </div>
     </div>
   );

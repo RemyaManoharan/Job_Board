@@ -6,7 +6,6 @@ const authenticate = async (req, res, next) => {
   try {
     // Get token from header
     const token = req.header("Authorization")?.replace("Bearer ", "");
-
     // Check if token exists
     if (!token) {
       return res
@@ -16,7 +15,7 @@ const authenticate = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    console.log('Decoded token:', decoded);
     // Check if user exists in database
     const result = await query(
       "SELECT user_id, f_name, l_name, email, role FROM users WHERE user_id = $1",
@@ -26,9 +25,10 @@ const authenticate = async (req, res, next) => {
     if (result.rows.length === 0) {
       return res.status(401).json({ message: "User not found" });
     }
-
+   
     // Add user to request object
     req.user = result.rows[0];
+    console.log('User ID from database:', req.user.user_id);
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
