@@ -82,7 +82,7 @@ const JobDetailsPage = () => {
         </button>
       </div>
       {isModalOpen && (
-        <JobApplicationModal onClose={() => setIsModalOpen(false)} />
+        <JobApplicationModal job={jobDetail} onClose={() => setIsModalOpen(false)}  />
       )}
     </div>
   );

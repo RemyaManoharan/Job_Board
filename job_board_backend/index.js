@@ -5,11 +5,9 @@ const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 const routes = require("./src/routes");
+const path = require('path');
 
-// Load environment variables
 dotenv.config();
-
-// Initialize express app
 const app = express();
 
 // Middleware
@@ -26,17 +24,15 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(limiter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api", routes);
-// Basic route to test server
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Job Board API" });
 });
 
-// Define port
 const PORT = process.env.PORT || 8000;
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
