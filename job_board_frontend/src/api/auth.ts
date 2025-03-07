@@ -13,3 +13,7 @@ export const loginUser = async (userData: LoginFormValues) => {
     );
     return response.data;
   };
+  export const fetchCurrentUser = async () => {
+    const response = await axios.get("http://localhost:8000/api/users/me");
+    return response.data;
+  };
