@@ -2,15 +2,11 @@ import React from "react";
 import { Job } from "../../type/jobs";
 import { useNavigate } from "react-router-dom";
 import { BadgeEuro, MapPin } from "lucide-react";
+import { formatSalary } from "../../utils/utils";
 
 interface JobCardProps {
   job: Job;
 }
-const formatSalary = (salary: string) => {
-  if (!salary) return "";
-  return `${salary.toLocaleString()} / Yearly`;
-};
-
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const navigate = useNavigate();
   const handleClick = () => {
@@ -45,15 +41,4 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
 export default JobCard;
 
-{
-  /* <div
-className="job-card mb-4 p-6 border-0 bg-white rounded-lg overflow-hidden hover:shadow-md transition-all cursor-pointer relative"
-onClick={handleClick}
->
- <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 "></div>
-<h2 className="text-xl font-bold">{job.title}</h2>
-<div className="text-sm text-gray-600 mb-3">
-  {job.company} • {job.location} • {job.isRemote ? "Remote" : "On-site"}
-</div>
-</div> */
-}
+

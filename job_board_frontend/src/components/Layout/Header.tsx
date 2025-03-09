@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
+import JobSphereIcon from "../../assets/job_shere.svg";
 
 interface AuthUser {
   id: number;
@@ -17,6 +18,7 @@ const Header = () => {
   const signOut = useSignOut();
   const auth = useAuthUser<AuthUser>();
   const navigate = useNavigate();
+  const location = useLocation();
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -32,31 +34,33 @@ const Header = () => {
     }
     return "U";
   };
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const getLinkStyle = (path: string) => {
+    return `px-4 py-2 rounded transition-colors duration-200 ${
+      isActive(path) ? "text-blue-500 font-semibold" : "hover:text-primary-blue"
+    }`;
+  };
+
   return (
     <div className="w-full bg-card-white shadom-sm p-4 flex justify-between items-center">
-      <div className="text-xl font-bold highlight-text">
+      <div className="flex text-xl font-bold ">
+        <img src={JobSphereIcon} alt="Job Sphere Logo" className="h-8 mr-2" />
         <Link to="/">Job Sphere</Link>
       </div>
 
       <div className="flex gap-4">
-        <Link
-          to="/jobs"
-          className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
-        >
+        <Link to="/jobs" className={getLinkStyle("/jobs")}>
           Find Jobs
         </Link>
         {!isAuthenticated ? (
           <>
-            <Link
-              to="/signup"
-              className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
-            >
+            <Link to="/signup" className={getLinkStyle("/signup")}>
               Sign Up
             </Link>
-            <Link
-              to="/login"
-              className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
-            >
+            <Link to="/login" className={getLinkStyle("/login")}>
               Log In
             </Link>
           </>
