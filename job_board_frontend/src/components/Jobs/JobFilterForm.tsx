@@ -96,7 +96,7 @@ const JobFilters: React.FC = () => {
 
   return (
     <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-lg font-semibold mb-4">Filter Jobs</h2>
+      <h2 className="text-lg font-semibold mb-4">Explore suggested searches</h2>
 
       <div className="mb-4">
         <label htmlFor="title" className="block text-sm font-medium mb-1">

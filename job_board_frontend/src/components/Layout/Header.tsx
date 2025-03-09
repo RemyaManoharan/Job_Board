@@ -33,15 +33,15 @@ const Header = () => {
     return "U";
   };
   return (
-    <div className="w-full bg-white p-4 flex justify-between items-center">
-      <div className="text-xl font-bold">
+    <div className="w-full bg-card-white shadom-sm p-4 flex justify-between items-center">
+      <div className="text-xl font-bold highlight-text">
         <Link to="/">Job Sphere</Link>
       </div>
 
       <div className="flex gap-4">
         <Link
           to="/jobs"
-          className="px-4 py-2 rounded hover:text-blue-600 transition-colors duration-200"
+          className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
         >
           Find Jobs
         </Link>
@@ -49,13 +49,13 @@ const Header = () => {
           <>
             <Link
               to="/signup"
-              className="px-4 py-2 rounded hover:text-blue-600 transition-colors duration-200"
+              className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
             >
               Sign Up
             </Link>
             <Link
               to="/login"
-              className="px-4 py-2 rounded hover:text-blue-600 transition-colors duration-200"
+              className="px-4 py-2 rounded hover:text-primary-blue transition-colors duration-200"
             >
               Log In
             </Link>
