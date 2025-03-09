@@ -4,17 +4,25 @@ import * as Yup from "yup";
 import { Link , useNavigate} from "react-router-dom";
 import { useMutation } from "react-query";
 import { loginUser } from "../api/auth";
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const signIn = useSignIn();
   const [loginError, setLoginError] = useState(false);
  
 
   const { mutate, isLoading } = useMutation(loginUser, {
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/"); // Redirect to home page or dashboard
+      signIn({
+        auth: {
+          token: data.token,
+          type: "Bearer"
+        },
+        userState: data.user,  // Save user data in auth state
+      
+      });
+      navigate("/");
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
