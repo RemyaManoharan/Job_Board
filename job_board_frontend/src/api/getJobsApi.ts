@@ -1,6 +1,7 @@
 import axios from "axios";
 import { JobDetail, Job } from "../type/jobs";
 import { useJobStore } from "../store/jobStore";
+import { API_BASE_URL } from "../config";
 
 export interface ApiResponse {
   jobs: Job[];
@@ -44,12 +45,12 @@ export const fetchJobs = async (): Promise<ApiResponse> => {
   params.append("limit", String(filters.limit));
 
   const response = await axios.get(
-    `http://localhost:8000/api/jobs?${params.toString()}`
+    `${API_BASE_URL}/api/jobs?${params.toString()}`
   );
   return response.data;
 };
 
 export const fetchJobDetail = async (jobId: number): Promise<JobDetail> => {
-  const response = await axios.get(`http://localhost:8000/api/jobs/${jobId}`);
+  const response = await axios.get(`${API_BASE_URL}/api/jobs/${jobId}`);
   return response.data;
 };

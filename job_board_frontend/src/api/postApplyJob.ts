@@ -1,6 +1,6 @@
 import axios from "axios";
 import { JobApplicationData, JobApplicationResponse } from "../type/jobs";
-const API_URL = "http://localhost:8000/api";
+import { API_BASE_URL } from "../config";
 
 export const submitJobApplication = async (
   applicationData: JobApplicationData
@@ -19,7 +19,7 @@ export const submitJobApplication = async (
 
   try {
     const response = await axios.post<JobApplicationResponse>(
-      `${API_URL}/applications`,
+      `${API_BASE_URL}/api/applications`,
       formData
     );
 
