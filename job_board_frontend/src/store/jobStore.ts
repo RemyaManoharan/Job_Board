@@ -37,13 +37,13 @@ const defaultFilters: JobFilters = {
   minSalary: null,
   maxSalary: null,
   page: 1,
-  limit: 7,
+  limit: 5,
 };
 const defaultPagination: PaginationData = {
   total: 0,
   pages: 0,
   currentPage: 1,
-  limit: 7,
+  limit: 5,
 };
 
 export const useJobStore = create<JobStore>((set) => ({

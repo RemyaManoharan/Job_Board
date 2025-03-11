@@ -23,12 +23,15 @@ const HomePage = () => {
     }
   );
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen bg-background-gray">
       {/* Header row that spans the full width */}
-      <div className="w-full bg-white-50 p-6 mb-4">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Find Your Next Opportunities
-        </h1>
+      <div className="w-full bg-white-50 p-6 mb-4 ">
+        <div className="container mx-auto">
+          <h1 className="text-3xl font-bold text-text-dark">
+            Find Your <span className="highlight-text">Dream Job</span> Here
+            Easy and Fast
+          </h1>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 h-screen">

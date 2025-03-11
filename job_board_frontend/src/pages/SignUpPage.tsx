@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SignUpFormValues } from "../type/User";
-// import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { signUpUser } from "../api/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
@@ -18,7 +18,7 @@ const SignUpSchema = Yup.object().shape({
 
 const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
-  // const signIn = useSignIn();
+  const signIn = useSignIn();
   const initialValues: SignUpFormValues = {
     f_name: "",
     l_name: "",
@@ -28,14 +28,18 @@ const SignUpPage: React.FC = () => {
   const mutation = useMutation({
     mutationFn: signUpUser,
     onSuccess: (data) => {
-      // Store user token using React Auth Kit
-      // signIn({
-      //   auth: {
-      //     token: data.token,
-      //     type: "Bearer",
-      //   },
-      //   userState: { id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, // Save user details
-      // });
+      signIn({
+        auth: {
+          token: data.token,
+          type: "Bearer",
+        },
+        userState: {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          role: data.user.role,
+        },
+      });
       console.log("User registered", data);
       navigate("/");
     },

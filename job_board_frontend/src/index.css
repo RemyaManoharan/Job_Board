@@ -1,5 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+
 body {
-    background-color: #f5f5f5;
-    font-family: 'Montserrat', sans-serif;
-  }
+  background-color: #f5f5f5;
+  font-family: "Montserrat", sans-serif;
+}
+:root {
+  --primary-blue: #4460ff;
+  --background-gray: #f7f9fc;
+  --text-dark: #323232;
+  --card-white: #ffffff;
+  --accent-pink: #fff0f5;
+}
+body {
+  background-color: var(--background-gray);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-dark);
+}
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3855f5;
+}
+/* Cards styling */
+.job-card {
+  background-color: var(--card-white);
+
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Accent elements */
+.highlight-text {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.highlight-bg {
+  background-color: var(--primary-blue);
+  color: white;
+}

@@ -29,3 +29,23 @@ export interface JobDetail {
   createdAt: string;
   company: Company;
 }
+export interface JobApplicationData {
+  name: string;
+  email: string;
+  contactNumber: string;
+  resume: File | null;
+  job_id: number | string;
+}
+
+export interface JobApplicationResponse {
+  success: boolean;
+  message: string;
+  data: {
+    application_id: number;
+    job_id: number | string;
+    name: string;
+    email: string;
+    resume_url: string | null;
+    applied_at: string;
+  };
+}

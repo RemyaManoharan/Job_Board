@@ -1,11 +1,18 @@
-import React from "react";
-import { Job } from "../../type/jobs";
+import React, { useState } from "react";
+import { JobDetail } from "../../type/jobs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { X, Upload } from "lucide-react";
+import { useMutation } from "react-query";
+import { submitJobApplication } from "../../api/postApplyJob";
+import { JobApplicationData } from "../../type/jobs";
+import { useNavigate, useParams } from "react-router-dom";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { AuthUser } from "../../type/User";
 
 interface JobApplicationModalProps {
-  job?: Job;
+  job?: JobDetail;
   onClose: () => void;
 }
 interface ApplicationFormValues {
@@ -14,27 +21,83 @@ interface ApplicationFormValues {
   contactNumber: string;
   resume: File | null;
 }
-const applicationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  contactNumber: Yup.string().required("Contact number is required"),
-  resume: Yup.mixed().required("Resume is required"),
-});
+
 const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
+  job,
   onClose,
 }) => {
+  const { id: jobIdUrl } = useParams<{ id: string }>();
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const auth = useAuthUser<AuthUser>();
+  const authHeader = useAuthHeader();
+  const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mutation = useMutation<any, Error, JobApplicationData>(
+    (data) => submitJobApplication(data, auth, authHeader),
+    {
+      onSuccess: () => {
+        alert("Job application submitted successfully! ✅");
+        onClose();
+      },
+      onError: (error) => {
+        setSubmitError(
+          error.message || "Failed to submit application. Please try again."
+        );
+      },
+    }
+  );
+
   const initialValues: ApplicationFormValues = {
     name: "",
     email: "",
     contactNumber: "",
     resume: null,
   };
-
-  const handleSubmit = (values: ApplicationFormValues) => {
-    console.log("Application submitted:", values);
+  const applicationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required")
+      .test(
+        "matches-auth-email",
+        "Email must match your account email",
+        (value) => value === auth?.email
+      ),
+    contactNumber: Yup.string().required("Contact number is required"),
+    resume: Yup.mixed().required("Resume is required"),
+  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = async (
+    values: ApplicationFormValues,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    { setSubmitting }: any
+  ) => {
+    const jobId = job?.id || jobIdUrl;
+    if (!jobId) {
+      console.error("No job ID provided");
+      return;
+    }
+    mutation.mutate({
+      ...values,
+      job_id: jobId,
+    });
+    setSubmitting(false);
   };
+  if (!auth) {
+    return (
+      <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <h3 className="text-lg font-semibold mb-2">Login Required</h3>
+        <p className="mb-4">You need to login before applying for this job.</p>
+        <button
+          onClick={() => navigate("/login")}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Go to Login
+        </button>
+      </div>
+    );
+  }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/10 backdrop-blur-sm p-4">
       <div className="bg-white rounded-lg w-full max-w-md p-6 relative shadow-md">
@@ -49,7 +112,11 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
         <h2 className="text-2xl font-bold text-center mb-6">
           Apply for this Job
         </h2>
-
+        {submitError && (
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-md">
+            {submitError}
+          </div>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={applicationSchema}
@@ -112,7 +179,10 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
                     accept=".pdf,.doc,.docx"
                     onChange={(event) => {
                       const file = event.currentTarget.files?.[0] || null;
-                      setFieldValue("resume", file);
+                      if (file) {
+                        setSelectedFileName(file.name);
+                        setFieldValue("resume", file);
+                      }
                     }}
                     className="hidden"
                   />
@@ -121,8 +191,13 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
                     className="inline-flex items-center px-4 py-2 border border-gray-300 rounded bg-white cursor-pointer"
                   >
                     <Upload size={18} className="mr-2" />
-                    Select File
+                    {selectedFileName ? "Change File" : "Select File"}
                   </label>
+                  {selectedFileName && (
+                    <span className="ml-3 text-sm text-gray-600 truncate max-w-[200px]">
+                      {selectedFileName}
+                    </span>
+                  )}
                 </div>
                 <ErrorMessage
                   name="resume"
@@ -134,10 +209,10 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
               <div className="flex justify-center pt-4">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-blue-500 text-white font-medium py-2 rounded hover:bg-blue-600 transition-colors"
+                  disabled={isSubmitting || mutation.isLoading}
+                  className="w-full bg-blue-500 text-white font-medium py-2 rounded hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                 >
-                  {isSubmitting ? "Submitting..." : "Apply"}
+                  {mutation.isLoading ? "Submitting..." : "Apply"}
                 </button>
               </div>
             </Form>
