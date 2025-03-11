@@ -1,10 +1,18 @@
 import axios from "axios";
 import { JobApplicationData, JobApplicationResponse } from "../type/jobs";
 import { API_BASE_URL } from "../config";
+import { AuthUser } from "../type/User";
 
 export const submitJobApplication = async (
-  applicationData: JobApplicationData
+  applicationData: JobApplicationData,
+  currentUser: AuthUser | null,
+  authHeader: string | null
 ): Promise<JobApplicationResponse> => {
+  if (!currentUser || currentUser.email !== applicationData.email) {
+    throw new Error(
+      "You can only submit applications with your own email address and your name"
+    );
+  }
   // Create FormData for file upload
   const formData = new FormData();
   formData.append("name", applicationData.name);
@@ -20,7 +28,12 @@ export const submitJobApplication = async (
   try {
     const response = await axios.post<JobApplicationResponse>(
       `${API_BASE_URL}/api/applications`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: authHeader,
+        },
+      }
     );
 
     return response.data;

@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS job_applications (
     applicant_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    contact_number VARCHAR(50),
     resume_url VARCHAR(500),
     applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -14,7 +14,13 @@ const submitApplication = async (req, res) => {
 
     // Get user ID if authenticated (optional)
     const applicant_id = req.user ? req.user.id : null;
-
+    // Check if the user is authenticated and verify email matches
+    if (req.user && req.user.email !== email) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only submit applications with your own email address",
+      });
+    }
     // Check if job exists
     const jobQuery = "SELECT * FROM jobs WHERE job_id = $1 AND status = $2";
     const jobResult = await db.query(jobQuery, [job_id, "active"]);
@@ -52,12 +58,19 @@ const submitApplication = async (req, res) => {
 
     // Insert application into database
     const insertQuery = `
-        INSERT INTO job_applications (job_id, applicant_id, name, email, resume_url, applied_at)
-        VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)
-        RETURNING application_id, applied_at
-      `;
+    INSERT INTO job_applications (job_id, applicant_id, name, email, contact_number, resume_url, applied_at)
+    VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)
+    RETURNING application_id, applied_at
+  `;
 
-    const values = [job_id, applicant_id, name, email, resume_url];
+    const values = [
+      job_id,
+      applicant_id,
+      name,
+      email,
+      contactNumber,
+      resume_url,
+    ];
     const result = await db.query(insertQuery, values);
 
     console.log(`Job application submitted: ${result.rows[0].application_id}`);
