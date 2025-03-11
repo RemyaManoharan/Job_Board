@@ -83,3 +83,15 @@ Replace your_postgres_username and your_postgres_password with your actual Postg
 `node src/initDb.js`
 If everything is set up correctly, you should see: Successfully connected to PostgreSQL database
 
+### 📚 API Documentation
+### EndpointMethodDescription
+
+| Endpoint | Method   | Description |
+|----------|----------|----------|
+|/api/users/register   |POST  | Register a new user   |
+|/api/users/login   | POST  | Login and get JWT token  |
+| /api/jobs   | GET  | Get all jobs with limit  |
+| /api/jobs/:id   | GET  | Get job details   |
+| /api/applications    | POST   | Submit job applications |
+
+
