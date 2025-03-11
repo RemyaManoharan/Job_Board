@@ -49,6 +49,7 @@ A full-stack job search application where users can browse listings, apply for p
 cd job_board_frontend
 npm install
 npm run dev
+```
 The frontend will be available at http://localhost:5173
 
 #### Backend Set Up
