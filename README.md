@@ -57,12 +57,14 @@ The frontend will be available at http://localhost:5173
 cd job_board_backend
 npm install
 npm run server
+```
+The backend API will be running at http://localhost:8000
 
-The backend API will be running at http://localhost:3000
 ### 📝 Environment Variables
 Create a .env file in the backend directory with the following variables:
+
 PORT=8000
-DATABASE_URL=postgresql://username:password@localhost:5432/jobsphere
+NODE_ENV=development
 JWT_SECRET=your_jwt_secret
 
 ### 📊 Database Setup
