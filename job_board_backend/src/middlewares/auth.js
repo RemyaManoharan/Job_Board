@@ -1,6 +1,5 @@
-// src/middleware/auth.js
 const jwt = require("jsonwebtoken");
-const { query } = require("../config/db"); // Assuming you have a db connection setup
+const { query } = require("../config/db"); 
 
 const authenticate = async (req, res, next) => {
   try {
