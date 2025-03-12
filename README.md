@@ -72,11 +72,11 @@ JWT_SECRET=your_jwt_secret
 
 #### Configure Enviroment variables
 
-DB_USER=your_postgres_username
-DB_PASSWORD=your_postgres_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=job_board
+DB_USER=your_postgres_username\
+DB_PASSWORD=your_postgres_password\
+DB_HOST=localhost\
+DB_PORT=5432\
+DB_NAME=job_board\
 Replace your_postgres_username and your_postgres_password with your actual PostgreSQL credentials.
 
 #### Run Database Initialization Script
