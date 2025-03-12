@@ -72,14 +72,26 @@ JWT_SECRET=your_jwt_secret
 
 #### Configure Enviroment variables
 
-DB_USER=your_postgres_username
-DB_PASSWORD=your_postgres_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=job_board
+DB_USER=your_postgres_username\
+DB_PASSWORD=your_postgres_password\
+DB_HOST=localhost\
+DB_PORT=5432\
+DB_NAME=job_board\
 Replace your_postgres_username and your_postgres_password with your actual PostgreSQL credentials.
 
 #### Run Database Initialization Script
 `node src/initDb.js`
 If everything is set up correctly, you should see: Successfully connected to PostgreSQL database
+
+### 📚 API Documentation
+### EndpointMethodDescription
+
+| Endpoint | Method   | Description |
+|----------|----------|----------|
+|/api/users/register   |POST  | Register a new user   |
+|/api/users/login   | POST  | Login and get JWT token  |
+| /api/jobs   | GET  | Get all jobs with limit  |
+| /api/jobs/:id   | GET  | Get job details   |
+| /api/applications    | POST   | Submit job applications |
+
 
