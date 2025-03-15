@@ -5,16 +5,21 @@ const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 const routes = require("./src/routes");
-const path = require('path');
+const path = require("path");
 
 dotenv.config();
 const app = express();
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse JSON request bodies
-app.use(morgan("dev")); // HTTP request logger
+app.use(helmet());
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:5173", 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true 
+}));
+app.use(express.json());
+app.use(morgan("dev"));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -24,7 +29,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(limiter);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api", routes);
 app.get("/", (req, res) => {

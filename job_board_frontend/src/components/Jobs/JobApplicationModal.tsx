@@ -55,16 +55,27 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
     resume: null,
   };
   const applicationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    name: Yup.string()
+      .required("Name is required")
+      .min(2, "Name must be at least 2 characters")
+      .max(255, "Name cannot exceed 255 characters"),
+    
     email: Yup.string()
-      .email("Invalid email address")
       .required("Email is required")
+      .email("Please provide a valid email address")
+      .max(255, "Email cannot exceed 255 characters")
       .test(
         "matches-auth-email",
         "Email must match your account email",
         (value) => value === auth?.email
       ),
-    contactNumber: Yup.string().required("Contact number is required"),
+    
+    contactNumber: Yup.string()
+      .matches(
+        /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+        "Please provide a valid phone number"
+      ),
+    
     resume: Yup.mixed().required("Resume is required"),
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

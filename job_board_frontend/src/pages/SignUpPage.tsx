@@ -8,12 +8,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 
 const SignUpSchema = Yup.object().shape({
-  f_name: Yup.string().required("First name is required"),
-  l_name: Yup.string().required("Last name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  f_name: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters")
+    .max(100, "First name cannot exceed 100 characters"),
+
+  l_name: Yup.string()
+    .required("Last name is required")
+    .min(1, "Last name must be at least 1 character")
+    .max(100, "Last name cannot exceed 100 characters"),
+
+  email: Yup.string()
+    .required("Email is required")
+    .email("Please provide a valid email address")
+    .max(255, "Email cannot exceed 255 characters"),
+
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .matches(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
+      "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character"
+    ),
 });
 
 const SignUpPage: React.FC = () => {

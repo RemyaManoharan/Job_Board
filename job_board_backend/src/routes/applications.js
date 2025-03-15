@@ -2,9 +2,16 @@ const express = require("express");
 const router = express.Router();
 const jobApplicationController = require("../controllers/jobApplicationController");
 const upload = require("../middlewares/fileUpload");
+const {
+  applicationSubmitRules,
+  validate,
+} = require("../models/jobApplicationValidation");
 // POST /api/applications - Submit a job application with resume upload
-router.post('/', 
-  upload.single('resume'), // Handle resume file upload
+router.post(
+  "/",
+  upload.single("resume"),
+  applicationSubmitRules,
+  validate,
   jobApplicationController.submitApplication
 );
 
