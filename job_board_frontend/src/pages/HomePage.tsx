@@ -1,4 +1,3 @@
-import React from "react";
 import JobList from "../components/Jobs/JobList";
 import { fetchJobs } from "../api/getJobsApi";
 import { useJobStore } from "../store/jobStore";

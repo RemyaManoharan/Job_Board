@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import JobApplicationModal from "../components/Jobs/JobApplicationModal";
 import { useQuery } from "react-query";
@@ -25,7 +25,7 @@ const JobDetailsPage = () => {
   const handleApplyClick = () => {
     setIsModalOpen(true);
   };
-  
+
   return (
     <div
       className="min-h-screen pt-10 pb-16"

@@ -1,4 +1,3 @@
-import React from "react";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { Navigate } from "react-router-dom";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";

@@ -1,4 +1,3 @@
-import React from "react";
 import JobCard from "./JobCard";
 import { useJobStore } from "../../store/jobStore";
 

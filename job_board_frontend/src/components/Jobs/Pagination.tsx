@@ -1,4 +1,3 @@
-import React from "react";
 import { useJobStore } from "../../store/jobStore";
 import {
   ChevronRight,
