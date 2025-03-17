@@ -13,7 +13,9 @@ const app = express();
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173", 
+  origin: process.env.NODE_ENV === 'production'
+  ? process.env.FRONTEND_URL || process.env.CLIENT_URL 
+  : "http://localhost:5173",
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true 
@@ -29,7 +31,9 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(limiter);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+if (process.env.NODE_ENV !== 'production') {
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+}
 
 app.use("/api", routes);
 app.get("/", (req, res) => {
