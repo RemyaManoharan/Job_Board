@@ -3,6 +3,30 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
+// Function for production environment (Railway)
+async function initializeProductionDatabase() {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+
+  try {
+    // Read the SQL schema file
+    const schemaPath = path.join(__dirname, "schema.sql");
+    const schema = fs.readFileSync(schemaPath, "utf8");
+
+    // Execute the SQL commands
+    console.log("Creating tables in production environment...");
+    await pool.query(schema);
+    console.log("Tables created successfully in production");
+  } catch (err) {
+    console.error("Error creating tables in production:", err);
+    throw err;
+  } finally {
+    await pool.end();
+  }
+}
+
 const adminPool = new Pool({
   user: process.env.DB_USER || "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -64,13 +88,25 @@ async function createTables() {
 
 // Main execution
 async function initializeDatabase() {
-  try {
-    await createDatabase();
-    await createTables();
-    console.log("Database initialization completed successfully");
-  } catch (err) {
-    console.error("Database initialization failed:", err);
-    process.exit(1);
+  // Check if we're in production environment (Railway)
+  if (process.env.NODE_ENV === "production") {
+    try {
+      await initializeProductionDatabase();
+      console.log("Production database initialization completed successfully");
+    } catch (err) {
+      console.error("Production database initialization failed:", err);
+      process.exit(1);
+    }
+  } else {
+    // Development environment - use existing functions
+    try {
+      await createDatabase();
+      await createTables();
+      console.log("Database initialization completed successfully");
+    } catch (err) {
+      console.error("Database initialization failed:", err);
+      process.exit(1);
+    }
   }
 }
 
