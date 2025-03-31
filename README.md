@@ -1,5 +1,9 @@
 # Job Sphere App
 A full-stack job search application where users can browse listings, apply for positions, and manage their job applications. Built with React, TypeScript, Tailwind CSS on the frontend, and Node.js, Express, and PostgreSQL on the backend.
+
+## Live Demo
+Check out the live version of the application: [https://job-board-rem.up.railway.app/](https://yourapp.example.com)
+
 ![Job Board Screenshot](./job_board_frontend/src/assets/HomePage.png)
 
 ## 🌟 Key Features
